@@ -18,7 +18,7 @@
   const slider = document.getElementById("slider");
   const valTxt = document.getElementById("val");
 
-  const client = mqtt.connect("wss://broker.hivemq.com:8000/mqtt", {
+  const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
     clientId: "WebClient_" + Math.floor(Math.random() * 10000)
   });
 
@@ -47,3 +47,4 @@
 </script>
 </body>
 </html>
+

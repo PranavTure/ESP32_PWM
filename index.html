@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 Control</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+
+<body style="text-align:center; font-family:Arial;">
+  <h1>ESP32 LED Control</h1>
+  <button id="btn" style="width:150px;height:60px;font-size:20px;background:red;color:white;">
+    OFF
+  </button>
+
+<script>
+  const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+
+  let state = false;
+
+  client.on("connect", () => {
+    console.log("Connected to MQTT");
+  });
+
+  document.getElementById("btn").onclick = () => {
+    state = !state;
+    if(state){
+      client.publish("pranav/esp32/led", "ON");
+      btn.innerText = "ON";
+      btn.style.background = "green";
+    } else {
+      client.publish("pranav/esp32/led", "OFF");
+      btn.innerText = "OFF";
+      btn.style.background = "red";
+    }
+  };
+</script>
+</body>
+</html>

@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ESP32 Control</title>
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <title>EPS32 LED BRIGHTNESS CONTROLLER</title>
+  <scrip src = "https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 </head>
 
-<body style="text-align:center; font-family:Arial;">
-  <h1>ESP32 LED Control</h1>
-  <button id="btn" style="width:150px;height:60px;font-size:20px;background:red;color:white;">
-    OFF
-  </button>
+  <body stype = "text-ligh:senter; font-family:Arial;">
+    <h1>LED BRIGTNESS CONTROL</h1>
 
-<script>
-  const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+    <input type = "range" id = "slider" min = "0" max = "100" value = "0" style - width:300px;">
 
-  let state = false;
+    <p>Brightness: <span id = "val">0</span></p>
 
-  client.on("connect", () => {
-    console.log("Connected to MQTT");
-  });
 
-  document.getElementById("btn").onclick = () => {
-    state = !state;
-    if(state){
-      client.publish("pranav/esp32/led", "ON");
-      btn.innerText = "ON";
-      btn.style.background = "green";
-    } else {
-      client.publish("pranav/esp32/led", "OFF");
-      btn.innerText = "OFF";
-      btn.style.background = "red";
-    }
-  };
-</script>
-</body>
+    <script>
+      const slider = document.getElementById("slider");
+      const valTxt = document.getElementById("val");
+
+      const client = mqtt.connect("wss://broker.hivemq.com:8000/mqtt", {
+        clientId: "WevClient_" + Math.floor(Math.random() * 10000)
+      });
+
+      client.on("connect", () => {
+        console.log("Connected");
+        client.subscribe("pranav/esp32/led/state");
+      });
+
+      // esp32 feedback
+
+      client.on("message", (topic, message) => {
+        const pwm = parseInt(message.toString());
+        const percent = Math.round((pwm/255) * 100);
+
+        slider.value = percent;
+        valTxt.inncerText = percent;
+      });
+
+      // slider change
+
+      slider.oninput = () => {
+        const percent = slider.value;
+        valTxt.innerText = percent;
+
+        const pwm = Math.round((percent/led) * 255);
+        client.publish("pranav/esp32/led/pwm", pwm.toString());
+      };
+    </script>
 </html>

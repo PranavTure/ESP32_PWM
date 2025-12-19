@@ -5,6 +5,7 @@
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 </head>
 
+  /*
 <body style="text-align:center;font-family:Arial;background-color:black;color:white;">
   <h1>LED Brightness Control</h1>
 
@@ -13,6 +14,14 @@
          style="width:300px;">
 
   <p>Brightness: <span id="val">0</span>%</p>
+*/
+
+  <body style="display:flex; justify-content:center; align-items:flex-start; height:100vh; font-family:Arial; background-color:black; color:white;">
+  <div style="margin-top:70vh; transform:translateY(-70%); text-align:center;">
+    <h1>LED Brightness Control</h1>
+    <input type="range" id="slider" min="0" max="100" value="0" style="width:300px;">
+    <p>Brightness: <span id="val">0</span>%</p>
+  </div>
 
 <script>
   const slider = document.getElementById("slider");
@@ -47,6 +56,7 @@
 </script>
 </body>
 </html>
+
 
 
 
